@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Site</title>
+    <script>
+        async function logIP() {
+            // Fetch the user's IP address from an external service
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            const userIP = data.ip;
+
+            // Log the IP to a Discord webhook
+            const webhookUrl = 'https://discord.com/api/webhooks/YOUR-WEBHOOK-ID/YOUR-WEBHOOK-TOKEN';
+            await fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    content: `Security Alert: New IP Logged - ${userIP}`,
+                }),
+            });
+
+            // Notify the user
+            document.getElementById('message').innerText = 'Your IP has been logged for security purposes.';
+        }
+
+        // Call the function when the page loads
+        window.onload = logIP;
+    </script>
+</head>
+<body>
+    <h1>Welcome to the Secure Site</h1>
+    <p id="message">Loading...</p>
+</body>
+</html>
